@@ -2047,9 +2047,14 @@ class DocumentParser {
             var requires = globalXmlParser.attr(choice, "Requires");
             var namespaceURI = elem.lookupNamespaceURI(requires);
             if (supportedNamespaceURIs.includes(namespaceURI))
-                return choice.firstElementChild;
+                return choice.firstChild||choice.firstElementChild;
         }
-        return globalXmlParser.element(elem, "Fallback")?.firstElementChild;
+        let content = globalXmlParser.element(elem, "Fallback")
+        if(content) {
+            return content.firstChild||content.firstElementChild;
+        } else {
+            return null;
+        }
     }
     parseDrawing(node) {
         for (var n of globalXmlParser.elements(node)) {
